@@ -7,7 +7,7 @@ extern "C" void mysetup(uint8_T DATA_PIN)
 {
     uint8_T NUM_LEDS = 3;
     CRGB leds[3];
-    FastLED.addLeds<NEOPIXEL, 5>(leds,3);
+    FastLED.addLeds<NEOPIXEL,5>(leds,3);
 }
 
 // write to LED strip

@@ -64,7 +64,7 @@ classdef FastLEDWrite2 < matlab.System & coder.ExternalDependency ...
             end
         end
         
-        function stepImpl(~,u)
+        function stepImpl(objs,u)
             if coder.target('Rtw')
                 coder.ceval('mywrite',u,obj.NumLEDs);
             end
