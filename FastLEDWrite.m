@@ -160,14 +160,16 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
             end
 
-            hcs = getActiveConfigSet(gcs);
-            if codertarget.arduinobase.internal.isArduinoDue(hcs);
-                boardType = 'SAM';
-            elseif codertarget.arduinobase.internal.isArduinoMKR1000(hcs);
-                boardType = 'SAMD';
-            else
-                boardType = 'AVR';
-            end
+            % hcs = getActiveConfigSet(gcs);
+            % if codertarget.arduinobase.internal.isArduinoDue(hcs);
+            %     boardType = 'SAM';
+            % elseif codertarget.arduinobase.internal.isArduinoMKR1000(hcs);
+            %     boardType = 'SAMD';
+            % else
+            %     boardType = 'AVR';
+            % end
+
+            boardType = 'AVR';
 
             fileNameToAdd = {'SPI.cpp'};
             switch boardType
@@ -175,7 +177,6 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                     [ideRootPath,~] = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
                     addIncludePaths(buildInfo,fullfile(ideRootPath,'hardware','arduino','avr','libraries','SPI','src'));
                     srcFilePath = fullfile(ideRootPath,'hardware','arduino','avr','libraries','SPI','src');
-
                     addSourceFiles(buildInfo,fileNameToAdd,srcFilePath);
                 case 'SAM'
                     [~,libSAMPath] = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
