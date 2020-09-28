@@ -52,7 +52,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         function setupImpl(obj)
             if coder.target('Rtw')
                 coder.cinclude('myFastLED.h');
-                coder.ceval('fastLEDWriteInit',obj.Pin,obj.NumLEDs);
+                coder.ceval('fastLEDInit',obj.NumLEDs);
             end
         end
 

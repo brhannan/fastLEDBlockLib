@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-void fastLEDInit(uint8_T DATA_PIN, uint8_T NUM_LEDS);
+void fastLEDInit(int NUM_LEDS);
 void fastLEDCommand(uint8_T *colorArray, int *totLEDs);
 
 #ifdef __cplusplus

@@ -10,7 +10,7 @@ int colorArray[MAX_LEDS*3];
 int g_NUM_LEDS = 3;
 
 // initialize
-extern "C" void fastLEDInit(uint8_T DATA_PIN, uint8_T NUM_LEDS)
+extern "C" void fastLEDInit(int NUM_LEDS)
 {
     g_NUM_LEDS = NUM_LEDS;
     FastLED.addLeds<NEOPIXEL,DATA_PIN>(leds,g_NUM_LEDS);
