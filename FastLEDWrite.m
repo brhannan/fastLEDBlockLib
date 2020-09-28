@@ -56,7 +56,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
             end
         end
 
-        function stepImpl(~,u)
+        function stepImpl(obj,u)
             dummyrgb = zeros(3*obj.NumLEDs,1,'uint8');
             if isempty(coder.target())
                 % simulation setup
