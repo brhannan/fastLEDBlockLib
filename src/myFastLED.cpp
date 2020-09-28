@@ -2,31 +2,37 @@
 #include <FastLED.h>
 #include "myFastLED.h"
 
+#define MAX_LEDS 255
+#define DATA_PIN 6
+
+CRGB leds[MAX_LEDS];
+int colorArray[MAX_LEDS*3];
+int g_NUM_LEDS = 3;
+
 // initialize
-extern "C" void mysetup(uint8_T DATA_PIN)
+extern "C" void fastLEDInit(uint8_T DATA_PIN, uint8_T NUM_LEDS)
 {
-    uint8_T NUM_LEDS = 3;
-    CRGB leds[3];
-    FastLED.addLeds<NEOPIXEL,5>(leds,3);
+    g_NUM_LEDS = NUM_LEDS;
+    FastLED.addLeds<NEOPIXEL,DATA_PIN>(leds,g_NUM_LEDS);
+    for (int k = 0; k < MAX_LEDS; k++)
+    {
+        leds[k] = CRGB::Black;
+    }
+    FastLED.show();
+    delay(10); // delay in ms
 }
 
 // write to LED strip
-extern "C" void mywrite(boolean_T val)
+extern "C" void fastLEDCommand(uint8_T *colorArray, int *totLEDs)
 {
-    if (val)
+    for (int n = 0; n < 3*g_NUM_LEDS; n++)
     {
-        CRGB leds[3];
-        for (int k=0; k<3; k++)
-        {
-            leds[k] = CRGB::Blue;
-        }
-        FastLED.show();
-    } else {
-        CRGB leds[3];
-        for (int k=0; k<3; k++)
-        {
-            leds[k] = CRGB::Black;
-        }
-        FastLED.show();
+        totLEDs[n] = colorArray[n];
     }
+    for (int k=0; k<g_NUM_LEDS; k++)
+    {
+        leds[k].setRGB(colorArray[3*k], colorArray[3*k+1], colorArray[3*k+2]);
+    }
+    FastLED.show();
+    delay(10); // delay in ms
 }

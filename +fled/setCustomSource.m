@@ -6,7 +6,7 @@ function setCustomSource(mdl,srcfile)
 %
 %   SRCFILE must be a character array. When specifying more than one file,
 %   use spaces to separate entries.
-%   
+%
 %   % EXAMPLE:
 %       fled.setCustomSource(bdroot,'mySrcFile.cpp')
 

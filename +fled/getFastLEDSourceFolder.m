@@ -1,8 +1,8 @@
 function fldr = getFastLEDSourceFolder()
 %GETFASTLEDSOURCEFOLDER Return the path to FastLED library folder.
-%   FLDR = FLED.GETFASTLEDSOURCEFOLDER() called with no input arguments 
+%   FLDR = FLED.GETFASTLEDSOURCEFOLDER() called with no input arguments
 %   returns the path to the /FastLED folder in character array FLDR.
-%   FastLED is the folder that contains the source code from the FastLED 
+%   FastLED is the folder that contains the source code from the FastLED
 %   GitHub repository. That is, the folder tree under /FastLED should look
 %   like this:
 %

@@ -5,9 +5,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-void mysetup(uint8_T DATA_PIN);
-void mywrite(boolean_T val);
+
+void fastLEDInit(uint8_T DATA_PIN, uint8_T NUM_LEDS);
+void fastLEDCommand(uint8_T *colorArray, int *totLEDs);
 
 #ifdef __cplusplus
 }
