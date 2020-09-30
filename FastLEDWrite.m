@@ -11,12 +11,13 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
     %#ok<*EMCA>
 
     properties (Nontunable)
-        %Pin Data pin that the LED strip is connected to.
+        %Pin Index of the data pin that the LED strip is connected to.
         %   Specify the number of the data pin that the LED strip is
         %   connected to.
         Pin = uint8(6)
-        %NumLEDs
-        %   Specify the number of LEDs.
+        %NumLEDs The number of LEDS on the LED strip.
+        %   Specify the number of LEDs on the LED strip. The max allowed
+        %   value is 255.
         NumLEDs = uint8(3)
     end
 
@@ -83,10 +84,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 % codegen setup
                 coder.cinclude('myFastLED.h');
                 clr = uint8(u);
-                % void fastLEDCommand(uint8_T *colorArray, int nleds, ...
-                %                                           int *totLEDs);
-                coder.ceval('fastLEDCommand',coder.ref(clr), ...
-                                obj.NumLEDs,coder.wref(obj.DummyRGBVec));
+                % void fastLEDCommand(uint8_T *colorArray, int nleds);
+                coder.ceval('fastLEDCommand',coder.ref(clr),obj.NumLEDs);
             end
         end % stepImpl
 

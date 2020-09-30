@@ -5,7 +5,6 @@
 #define MAX_LEDS 255
 
 CRGB leds[MAX_LEDS];
-int totLEDs[MAX_LEDS*3];
 
 // initialize
 extern "C" void fastLEDInit(int numLEDs, int controlPin)
@@ -49,7 +48,7 @@ extern "C" void fastLEDInit(int numLEDs, int controlPin)
 }
 
 // write to LED strip
-extern "C" void fastLEDCommand(uint8_T *colorArray, int nled, int *totLEDs)
+extern "C" void fastLEDCommand(uint8_T *colorArray, int nled)
 {
     for (int k=0; k<nled; k++)
     {
