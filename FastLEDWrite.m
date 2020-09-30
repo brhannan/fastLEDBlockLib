@@ -3,6 +3,9 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
     %FastLEDWrite Write to WS2812B LED strip using FastLED and Arduino Uno.
     %   FLW = FastLEDWrite returns FastLEDWrite object FLW which can be
     %   used to control a WS2812B LED strip through an Arduino Uno.
+    %
+    %   It is assumed that the board type is AVR (see method
+    %   updateBuildInfo()).
 
     %#codegen
     %#ok<*EMCA>
@@ -52,7 +55,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         function setupImpl(obj)
             if coder.target('Rtw')
                 coder.cinclude('myFastLED.h');
-                coder.ceval('fastLEDInit',obj.NumLEDs);
+                coder.ceval('fastLEDInit',uint8(obj.NumLEDs));
             end
         end
 
@@ -68,7 +71,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 coder.ceval('fastLEDCommand',coder.ref(clr), ...
                                                 coder.wref(dummyrgb));
             end
-        end
+        end % stepImpl
 
         function releaseImpl(obj) %#ok<MANU>
         end
@@ -104,7 +107,9 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         function validateInputsImpl(~,u)
             if isempty(coder.target)
                 % validate inputs in simulation mode
-                validateattributes(u,{'numeric'},{'vector'},'','u');
+                expInputLen = 3 * obj.NumLEDs;
+                validateattributes(u,{'numeric'}, ...
+                    {'vector','numel',expInputLen},'','u');
             end
         end
 
@@ -140,58 +145,38 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
             % when code is generated, we assume that the FastLEDWrite root
             % directory contains three subdirectories: include, src and
             % FastLED, which contains all FastLED library code
-            if context.isCodeGenTarget('rtw')
-                rootDir = fled.getFastLEDDriverFolder();
+            %
+            % it is assumed that the board type is AVR
 
+            if context.isCodeGenTarget('rtw')
                 % get paths to src, include and FastLED directories
+                pkgRoot = fled.getFastLEDDriverFolder();
                 fastLEDDir = fled.getFastLEDSourceFolder();
-                srcDir = fullfile(rootDir,'src');
-                inclDir = fullfile(rootDir,'include');
+                srcDir = fullfile(pkgRoot,'src');
+                inclDir = fullfile(pkgRoot,'include');
 
                 % include /include and /FastLED
                 buildInfo.addIncludePaths(inclDir);
                 buildInfo.addIncludePaths(fastLEDDir);
 
-                % add source files myFastLED.cpp, FastLED.cpp
+                % add custom source files myFastLED.cpp, FastLED.cpp
                 buildInfo.addSourceFiles('myFastLED.cpp',srcDir);
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
 
+                % add FastLED source
                 buildInfo.addIncludeFiles('FastLED.h');
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
+
+                % add arduino source
+                % the code below is only supported for AVR boards
+                ideRoot = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
+                spiSrcPath = fullfile(ideRoot,'hardware','arduino', ...
+                                        'avr','libraries','SPI','src');
+                buildInfo.addIncludePaths(spiSrcPath);
+                buildInfo.addSourceFiles('SPI.cpp',spiSrcPath);
             end
 
-            % hcs = getActiveConfigSet(gcs);
-            % if codertarget.arduinobase.internal.isArduinoDue(hcs);
-            %     boardType = 'SAM';
-            % elseif codertarget.arduinobase.internal.isArduinoMKR1000(hcs);
-            %     boardType = 'SAMD';
-            % else
-            %     boardType = 'AVR';
-            % end
-
-            boardType = 'AVR';
-
-            fileNameToAdd = {'SPI.cpp'};
-            switch boardType
-                case 'AVR'
-                    [ideRootPath,~] = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
-                    addIncludePaths(buildInfo,fullfile(ideRootPath,'hardware','arduino','avr','libraries','SPI','src'));
-                    srcFilePath = fullfile(ideRootPath,'hardware','arduino','avr','libraries','SPI','src');
-                    addSourceFiles(buildInfo,fileNameToAdd,srcFilePath);
-                case 'SAM'
-                    [~,libSAMPath] = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
-                    addIncludePaths(buildInfo,fullfile(libSAMPath,'SPI','src'));
-                    srcFilePath = fullfile(libSAMPath,'SPI','src');
-                    addSourceFiles(buildInfo,fileNameToAdd,srcFilePath);
-                case 'SAMD'
-                    [~,libSAMPath] = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
-                    addIncludePaths(buildInfo,fullfile(libSAMPath,'SPI'));
-                    srcFilePath = fullfile(libSAMPath,'SPI');
-                    addSourceFiles(buildInfo,fileNameToAdd,srcFilePath);
-                otherwise
-                    error('Unrecognized board type: %s.',boardType);
-            end
-        end
+        end % updateBuildInfo
 
     end % static methods
 
