@@ -10,8 +10,6 @@ int totLEDs[MAX_LEDS*3];
 // initialize
 extern "C" void fastLEDInit(int numLEDs, int controlPin)
 {
-    T_NUM_LEDS = numLEDs;
-
     // switch block is used b/c addLeds 2nd template arg must be const
     switch (controlPin) {
         case 2:
