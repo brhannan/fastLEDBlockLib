@@ -4,6 +4,6 @@ function p = getArduinoAVRSPIFolder()
 %   .../avr/libraries/SPI/src directory in the Simulink/Arduino HWSP.
 
 arduinoRoot = fledblk.getArduinoIDERoot();
-p = fullfile('hardware','arduino','avr','libraries','SPI','src');
+p = fullfile(arduinoRoot,'hardware','arduino','avr','libraries','SPI','src');
 
 end % getArduinoIDERoot

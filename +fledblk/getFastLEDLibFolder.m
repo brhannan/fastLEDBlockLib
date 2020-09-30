@@ -25,7 +25,7 @@ function fldr = getFastLEDLibFolder()
 %       p = fledblk.getFastLEDLibFolder()
 
 % get the root folder for the FastLED Simulink library project
-fledPkgFldr = fled.getFastLEDDriverFolder();
+fledPkgFldr = fledblk.getFastLEDDriverFolder();
 
 % we expect to find the FastLED library folder in this directory
 folderName = 'FastLED';

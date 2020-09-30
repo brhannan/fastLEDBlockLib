@@ -166,8 +166,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
 
             if context.isCodeGenTarget('rtw')
                 % get paths to src, include and FastLED directories
-                pkgRoot = fledlblk.getFastLEDDriverFolder();
-                fastLEDDir = fledlblk.getFastLEDLibFolder();
+                pkgRoot = fledblk.getFastLEDDriverFolder();
+                fastLEDDir = fledblk.getFastLEDLibFolder();
                 srcDir = fullfile(pkgRoot,'src');
                 inclDir = fullfile(pkgRoot,'include');
                 % include /include and /FastLED
