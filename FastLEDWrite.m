@@ -46,7 +46,13 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                     'following: %s.'],num2str(obj.AvailablePins));
             end
             obj.Pin = value;
-        end
+        end % set.Pin
+
+        function set.NumLEDs(obj,value)
+            validateattributes(value,{'numeric'}, ...
+                {'real','positive','integer','scalar'},'','NumLEDs');
+            obj.NumLEDs = value;
+        end % set.NumLEDs
 
     end % methods
 
@@ -57,7 +63,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 coder.cinclude('myFastLED.h');
                 coder.ceval('fastLEDInit',uint8(obj.NumLEDs));
             end
-        end
+        end % setupImpl
 
         function stepImpl(obj,u)
             dummyrgb = zeros(3*obj.NumLEDs,1,'uint8');
@@ -68,6 +74,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 % codegen setup
                 coder.cinclude('myFastLED.h');
                 clr = uint8(u);
+                % void fastLEDCommand(uint8_T *colorArray, int *totLEDs);
                 coder.ceval('fastLEDCommand',coder.ref(clr), ...
                                                 coder.wref(dummyrgb));
             end

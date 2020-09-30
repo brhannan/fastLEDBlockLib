@@ -6,7 +6,7 @@
 #define DATA_PIN 6
 
 CRGB leds[MAX_LEDS];
-int colorArray[MAX_LEDS*3];
+int totLEDs[MAX_LEDS*3];
 int g_NUM_LEDS = 3;
 
 // initialize
@@ -31,7 +31,7 @@ extern "C" void fastLEDCommand(uint8_T *colorArray, int *totLEDs)
     }
     for (int k=0; k<g_NUM_LEDS; k++)
     {
-        leds[k].setRGB(colorArray[3*k], colorArray[3*k+1], colorArray[3*k+2]);
+        leds[k].setRGB(totLEDs[3*k], totLEDs[3*k+1], totLEDs[3*k+2]);
     }
     FastLED.show();
     delay(10); // delay in ms
