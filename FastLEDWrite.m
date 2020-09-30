@@ -104,7 +104,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
             varargout{1} = false;
         end
 
-        function validateInputsImpl(~,u)
+        function validateInputsImpl(obj,u)
             if isempty(coder.target)
                 % validate inputs in simulation mode
                 expInputLen = 3 * obj.NumLEDs;
