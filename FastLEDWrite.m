@@ -166,8 +166,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
 
             if context.isCodeGenTarget('rtw')
                 % get paths to src, include and FastLED directories
-                pkgRoot = fled.getFastLEDDriverFolder();
-                fastLEDDir = fled.getFastLEDLibFolder();
+                pkgRoot = fledlblk.getFastLEDDriverFolder();
+                fastLEDDir = fledlblk.getFastLEDLibFolder();
                 srcDir = fullfile(pkgRoot,'src');
                 inclDir = fullfile(pkgRoot,'include');
                 % include /include and /FastLED
@@ -180,10 +180,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 buildInfo.addIncludeFiles('FastLED.h');
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
                 % add arduino source
-                % the code below is only supported for AVR boards
-                ideRoot = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
-                spiSrcPath = fullfile(ideRoot,'hardware','arduino', ...
-                                        'avr','libraries','SPI','src');
+                % the code below requires AVR board
+                spiSrcPath = fledblk.getArduinoAVRSPIFolder();
                 buildInfo.addIncludePaths(spiSrcPath);
                 buildInfo.addSourceFiles('SPI.cpp',spiSrcPath);
             end
