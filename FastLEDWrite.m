@@ -2,7 +2,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
     & matlab.system.mixin.Propagates & matlab.system.mixin.CustomIcon
     %FastLEDWrite Write to WS2812B LED strip using FastLED and Arduino Uno.
     %   FLW = FastLEDWrite returns FastLEDWrite object FLW which can be
-    %   used to control a WS2812B LED strip through an Arduino Uno.
+    %   used to control a WS2812B LED strip with an Arduino Uno.
     %
     %   It is assumed that the board type is AVR (see method
     %   updateBuildInfo()).
@@ -14,10 +14,10 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         %Pin Data pin that the LED strip is connected to.
         %   Specify the number of the data pin that the LED strip is
         %   connected to.
-        Pin = 5
+        Pin = uint8(6)
         %NumLEDs
         %   Specify the number of LEDs.
-        NumLEDs = 3
+        NumLEDs = uint8(3)
     end
 
     properties (Constant, Hidden)
@@ -27,6 +27,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
 
     properties (Hidden)
         %DummyRGBVec Temp. vector for RGB input values.
+        %   This vector is an input to fastLEDCommand(). It is used in
+        %   order to provide a constant-lenth vector input.
         %   This property cannot have attribute Constant because this is
         %   not supported for code generation.
         DummyRGBVec = zeros(255,1,'uint8')
@@ -40,8 +42,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         end
 
         function set.Pin(obj,value)
-            validateattributes(value,{'numeric'}, ...
-                {'real','positive','integer','scalar'},'','Pin');
+            validateattributes(value,{'uint8'}, ...
+            {'real,''integer','scalar'},'','Pin');
             assert(any(value == obj.AvailablePins), ...
                 ['Invalid value for Pin. Pin must be one of the '      ...
                 'following: %s'], ...
@@ -56,8 +58,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         end % set.Pin
 
         function set.NumLEDs(obj,value)
-            validateattributes(value,{'numeric'}, ...
-                {'real','positive','integer','scalar','<=',255},'', ...
+            validateattributes(value,{'uint8'}, ...
+                {'real','integer','scalar','<=',255},'', ...
                 'NumLEDs');
             obj.NumLEDs = value;
         end % set.NumLEDs
@@ -69,8 +71,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         function setupImpl(obj)
             if coder.target('Rtw')
                 coder.cinclude('myFastLED.h');
-                coder.ceval('fastLEDInit',uint8(obj.NumLEDs), ...
-                                                        uint8(obj.Pin));
+                coder.ceval('fastLEDInit',obj.NumLEDs,obj.Pin);
             end
         end % setupImpl
 
@@ -85,7 +86,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 % void fastLEDCommand(uint8_T *colorArray, int nleds, ...
                 %                                           int *totLEDs);
                 coder.ceval('fastLEDCommand',coder.ref(clr), ...
-                        uint8(obj.NumLEDs), coder.wref(obj.DummyRGBVec));
+                                obj.NumLEDs,coder.wref(obj.DummyRGBVec));
             end
         end % stepImpl
 

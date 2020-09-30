@@ -6,40 +6,40 @@
 
 CRGB leds[MAX_LEDS];
 int totLEDs[MAX_LEDS*3];
-int T_NUM_LEDS = 3;
 
 // initialize
 extern "C" void fastLEDInit(int numLEDs, int controlPin)
 {
     T_NUM_LEDS = numLEDs;
 
+    // switch block is used b/c addLeds 2nd template arg must be const
     switch (controlPin) {
         case 2:
-            FastLED.addLeds<NEOPIXEL,2>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,2>(leds,numLEDs);
         case 3:
-            FastLED.addLeds<NEOPIXEL,3>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,3>(leds,numLEDs);
         case 4:
-            FastLED.addLeds<NEOPIXEL,4>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,4>(leds,numLEDs);
         case 5:
-            FastLED.addLeds<NEOPIXEL,5>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,5>(leds,numLEDs);
         case 6:
-            FastLED.addLeds<NEOPIXEL,6>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,6>(leds,numLEDs);
         case 7:
-            FastLED.addLeds<NEOPIXEL,7>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,7>(leds,numLEDs);
         case 8:
-            FastLED.addLeds<NEOPIXEL,8>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,8>(leds,numLEDs);
         case 9:
-            FastLED.addLeds<NEOPIXEL,9>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,9>(leds,numLEDs);
         case 10:
-            FastLED.addLeds<NEOPIXEL,10>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,10>(leds,numLEDs);
         case 11:
-            FastLED.addLeds<NEOPIXEL,11>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,11>(leds,numLEDs);
         case 12:
-            FastLED.addLeds<NEOPIXEL,12>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,12>(leds,numLEDs);
         case 13:
-            FastLED.addLeds<NEOPIXEL,13>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,13>(leds,numLEDs);
         default :
-            FastLED.addLeds<NEOPIXEL,6>(leds,T_NUM_LEDS);
+            FastLED.addLeds<NEOPIXEL,6>(leds,numLEDs);
     }
 
     for (int k = 0; k < MAX_LEDS; k++)
@@ -57,7 +57,7 @@ extern "C" void fastLEDCommand(uint8_T *colorArray, int nled, int *totLEDs)
     {
         totLEDs[n] = colorArray[n];
     }
-    for (int k=0; k<T_NUM_LEDS; k++)
+    for (int k=0; k<nled; k++)
     {
         leds[k].setRGB(totLEDs[3*k], totLEDs[3*k+1], totLEDs[3*k+2]);
     }
