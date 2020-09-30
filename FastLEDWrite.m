@@ -171,19 +171,15 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 fastLEDDir = fled.getFastLEDLibFolder();
                 srcDir = fullfile(pkgRoot,'src');
                 inclDir = fullfile(pkgRoot,'include');
-
                 % include /include and /FastLED
                 buildInfo.addIncludePaths(inclDir);
                 buildInfo.addIncludePaths(fastLEDDir);
-
                 % add custom source files myFastLED.cpp, FastLED.cpp
                 buildInfo.addSourceFiles('myFastLED.cpp',srcDir);
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
-
                 % add FastLED source
                 buildInfo.addIncludeFiles('FastLED.h');
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
-
                 % add arduino source
                 % the code below is only supported for AVR boards
                 ideRoot = codertarget.arduinobase.internal.getArduinoIDERoot('libraries');
