@@ -50,7 +50,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
 
         function set.NumLEDs(obj,value)
             validateattributes(value,{'numeric'}, ...
-                {'real','positive','integer','scalar'},'','NumLEDs');
+                {'real','positive','integer','scalar','<=',255},'', ...
+                'NumLEDs');
             obj.NumLEDs = value;
         end % set.NumLEDs
 
@@ -66,7 +67,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         end % setupImpl
 
         function stepImpl(obj,u)
-            dummyrgb = zeros(3*obj.NumLEDs,1,'uint8');
+            dummyrgb = zeros(255,1,'uint8');
             if isempty(coder.target())
                 % simulation setup
                 % do nothing
