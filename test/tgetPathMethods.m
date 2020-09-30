@@ -24,8 +24,6 @@ classdef tgetPathMethods < matlab.unittest.TestCase
                 'Check for valid /FastLED directory path.');
         end % testGetFastLEDLibFldr
 
-        end %testGetFastLEDLibFldr
-
     end
 
 end % tgetPathMethods
