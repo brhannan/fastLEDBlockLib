@@ -1,12 +1,12 @@
 function fldr = getFastLEDDriverFolder()
 %GETFASTLEDDRIVERFOLDER Return the path to fastleddriver folder.
-%   FLDR = FLED.GETFASTLEDDRIVERFOLDER() called with no input arguments 
-%   returns the path to the /fastleddriver folder in character array FLDR. 
-%   /fastleddriver is the root folder for the Fast LED Simulink Library 
+%   FLDR = FLED.GETFASTLEDDRIVERFOLDER() called with no input arguments
+%   returns the path to the /fastleddriver folder in character array FLDR.
+%   /fastleddriver is the root folder for the Fast LED Simulink Library
 %   project.
 %
 %   % EXAMPLE:
-%       fledprjfldr = fled.getFastLEDDriverFolder()
+%       p = fled.getFastLEDDriverFolder()
 
 fledPkgFldr = fullfile(fileparts(mfilename('fullpath')));
 slashIxs = regexp(fledPkgFldr,filesep);
