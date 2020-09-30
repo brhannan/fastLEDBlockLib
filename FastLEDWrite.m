@@ -23,7 +23,12 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
     properties (Constant, Hidden)
         %AvailablePins Allowed values for Pin on Arduino Uno.
         AvailablePins = 2:13
+    end
+
+    properties (Hidden)
         %DummyRGBVec Temp. vector for RGB input values.
+        %   This property cannot have attribute Constant because this is
+        %   not supported for code generation.
         DummyRGBVec = zeros(255,1,'uint8')
     end
 
@@ -64,7 +69,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         function setupImpl(obj)
             if coder.target('Rtw')
                 coder.cinclude('myFastLED.h');
-                coder.ceval('fastLEDInit',uint8(obj.NumLEDs));
+                coder.ceval('fastLEDInit',uint8(obj.NumLEDs), ...
+                                                        uint8(obj.Pin));
             end
         end % setupImpl
 
