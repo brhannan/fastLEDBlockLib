@@ -23,9 +23,9 @@ extern "C" void fastLEDInit(int NUM_LEDS)
 }
 
 // write to LED strip
-extern "C" void fastLEDCommand(uint8_T *colorArray, int *totLEDs)
+extern "C" void fastLEDCommand(uint8_T *colorArray, int nled, int *totLEDs)
 {
-    for (int n = 0; n < 3*g_NUM_LEDS; n++)
+    for (int n = 0; n < 3*nled; n++)
     {
         totLEDs[n] = colorArray[n];
     }
