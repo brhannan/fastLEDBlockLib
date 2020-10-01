@@ -1,5 +1,5 @@
 classdef tgetPathMethods < matlab.unittest.TestCase
-%TGETPATHMETHODS Check that valid paths are returned by get path methods.
+%TGETPATHMETHODS Test path-getter methods.
 
     methods (Test)
 
