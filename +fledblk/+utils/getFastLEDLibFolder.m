@@ -1,6 +1,6 @@
 function fldr = getFastLEDLibFolder()
 %GETFASTLEDLIBFOLDER Return the path to FastLED library folder.
-%   FLDR = FLEDBLK.GETFASTLEDLIBFOLDER() called with no input arguments
+%   FLDR = FLEDBLK.UTILS.GETFASTLEDLIBFOLDER() called with no input arguments
 %   returns the path to the /FastLED folder in character array FLDR.
 %   FastLED is the folder that contains the source code from the FastLED
 %   GitHub repository. That is, the folder tree under /FastLED should look
@@ -22,10 +22,10 @@ function fldr = getFastLEDLibFolder()
 %   so that the appropriate path is returned.
 %
 %   % EXAMPLE:
-%       p = fledblk.getFastLEDLibFolder()
+%       p = fledblk.utils.getFastLEDLibFolder()
 
 % get the root folder for the FastLED Simulink library project
-fledPkgFldr = fledblk.getFastLEDDriverFolder();
+fledPkgFldr = fledblk.utils.getFastLEDDriverFolder();
 
 % we expect to find the FastLED library folder in this directory
 folderName = 'FastLED';
