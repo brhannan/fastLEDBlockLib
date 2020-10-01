@@ -38,21 +38,14 @@ extern "C" void fastLEDInit(int numLEDs, int controlPin)
         default :
             FastLED.addLeds<NEOPIXEL,6>(leds,numLEDs);
     }
-
-    for (int k = 0; k < MAX_LEDS; k++)
-    {
-        leds[k] = CRGB::Black;
-    }
-    FastLED.show();
-    delay(10); // delay in ms
 }
 
 // write to LED strip
-extern "C" void fastLEDCommand(uint8_T *colorArray, int nled)
+extern "C" void fastLEDCommand(uint8_T *colors, int nled)
 {
     for (int k=0; k<nled; k++)
     {
-        leds[k].setRGB(colorArray[3*k], colorArray[3*k+1], colorArray[3*k+2]);
+        leds[k].setRGB(colors[3*k], colors[3*k+1], colors[3*k+2]);
     }
     FastLED.show();
     delay(10); // delay in ms

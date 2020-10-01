@@ -1,9 +1,11 @@
 classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
     & matlab.system.mixin.Propagates & matlab.system.mixin.CustomIcon
-    %FastLEDWrite Write to WS2812B LED strip using FastLED and Arduino Uno.
-    %   FLW = FastLEDWrite returns FastLEDWrite object FLW which can be
-    %   used to control a WS2812B LED strip with an Arduino Uno.
+    %fledblk.FastLEDWrite Write to WS2812B LED strip using FastLED and
+    %   Arduino Uno.
     %
+    %   FLW = fledblk.FastLEDWrite returns FastLEDWrite object FLW which
+    %   can be used to control a WS2812B LED strip with an Arduino Uno.
+
     %   It is assumed that the board type is AVR (see method
     %   updateBuildInfo()).
 
@@ -24,15 +26,6 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
     properties (Constant, Hidden)
         %AvailablePins Allowed values for Pin on Arduino Uno.
         AvailablePins = 2:13
-    end
-
-    properties (Hidden)
-        %DummyRGBVec Temp. vector for RGB input values.
-        %   This vector is an input to fastLEDCommand(). It is used in
-        %   order to provide a constant-lenth vector input.
-        %   This property cannot have attribute Constant because this is
-        %   not supported for code generation.
-        DummyRGBVec = zeros(255,1,'uint8')
     end
 
     methods
@@ -84,7 +77,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 % codegen setup
                 coder.cinclude('myFastLED.h');
                 clr = uint8(u);
-                % void fastLEDCommand(uint8_T *colorArray, int nleds);
+                % void fastLEDCommand(uint8_T *colors, int nleds);
                 coder.ceval('fastLEDCommand',coder.ref(clr),obj.NumLEDs);
             end
         end % stepImpl
