@@ -41,13 +41,13 @@ extern "C" void fastLEDInit(int numLEDs, int controlPin)
 }
 
 // write to LED strip
-extern "C" void fastLEDCommandRGB(uint8_T *colors, int nled)
+extern "C" void fastLEDCommandRGB(uint8_T *colors, int nled, int b)
 {
     for (int k=0; k<nled; k++)
     {
         leds[k].setRGB(colors[3*k], colors[3*k+1], colors[3*k+2]);
     }
-    FastLED.setBrightness(255);
+    FastLED.setBrightness(b);
     FastLED.show();
     delay(10); // delay in ms
 }

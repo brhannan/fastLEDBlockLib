@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 void fastLEDInit(int NUM_LEDS, int controlPin);
-void fastLEDCommand(uint8_T *colors, int nled);
+void fastLEDCommand(uint8_T *colors, int nled, int b);
 
 #ifdef __cplusplus
 }

@@ -24,7 +24,7 @@ classdef FastLEDWriteRGB < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
     %#ok<*EMCA>
 
     methods (Access = protected)
-        function stepImpl(obj,u)
+        function stepImpl(obj,u,b)
             if isempty(coder.target())
                 % simulation setup
                 % do nothing
@@ -32,7 +32,9 @@ classdef FastLEDWriteRGB < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
                 % codegen setup
                 coder.cinclude('fastLEDWrite.h');
                 clr = uint8(u);
-                coder.ceval('fastLEDCommandRGB',coder.ref(clr),obj.NumLEDs);
+                brightness = uint8(b);
+                coder.ceval('fastLEDCommandRGB',coder.ref(clr), ...
+                    obj.NumLEDs,brightness);
             end
         end % stepImpl
     end

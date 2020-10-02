@@ -29,7 +29,7 @@ blkPath = [block,'/Brightness'];
 % check whether block type change is needed (if user presses OK/Apply
 % without changing the add brightness inport checkbox, then no action is
 % needed here)
-isBlkTypeChangeNeeded = ~strcmp(get_param(blkPath,'BlockType',newBlkType));
+isBlkTypeChangeNeeded = ~strcmp(get_param(blkPath,'BlockType'),newBlkType);
 if isBlkTypeChangeNeeded
     fledblk.blocks.replaceBlock(blkPath,newSrcBlk);
     % set block properties

@@ -24,7 +24,7 @@ classdef FastLEDWriteHSV < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
     %#ok<*EMCA>
 
     methods (Access = protected)
-        function stepImpl(obj,u)
+        function stepImpl(obj,u,~)
             if isempty(coder.target())
                 % simulation setup
                 % do nothing
