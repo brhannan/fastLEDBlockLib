@@ -16,7 +16,7 @@ Get the [FastLED library.](https://github.com/FastLED)
 
 Copy contents of FastLED-master to FastLEDDriver/FastLED.
 
-Open testFastLEDWRite.slx.
+Open testFastLEDWrite.slx.
 
 Connect an Arduino Uno to your machine.
 
