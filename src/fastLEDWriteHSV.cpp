@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
-#include "myFastLED.h"
+#include "fastLEDWrite.h"
 
 #define MAX_LEDS 255
 
