@@ -16,10 +16,10 @@ Get the [FastLED library.](https://github.com/FastLED)
 
 Copy contents of FastLED-master to FastLEDDriver/FastLED.
 
-Open INSERT NAME OF TEST MODEL HERE.
+Open testFastLEDWRite.slx.
 
 Connect an Arduino Uno to your machine.
 
-Connect a WS2812B LED strip to the arduino (see instructions below).
+Connect a WS2812B LED strip to the Arduino. Connect the control line to pin 6.
 
 Press ctrl+b to deploy to the Arduino.
