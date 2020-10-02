@@ -13,27 +13,23 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
     %#ok<*EMCA>
 
     properties (Nontunable)
-        %Pin Index of the data pin that the LED strip is connected to.
+        %Pin Data pin index
         %   Specify the number of the data pin that the LED strip is
         %   connected to.
         Pin = uint8(6)
-        %NumLEDs The number of LEDS on the LED strip.
+        %NumLEDs Number of LEDs
         %   Specify the number of LEDs on the LED strip. The max allowed
         %   value is 255.
         NumLEDs = uint8(3)
-        %ColorType Color specification type.
-        %   Specify color type. May be 'RGB' or 'HSV'.
-        ColorType = 'RGB'
+        %ColorType Color specification type
+        %   Specify color type. When set to 1, the color type is RGB; 2,
+        %   HSV.
+        ColorType = 1
     end
 
     properties (Constant, Hidden)
         %AvailablePins Allowed values for Pin on Arduino Uno.
         AvailablePins = 2:13
-    end
-
-    properties (Hidden)
-        %SrcFile Custom FastLED source file name.
-        SrcFile = 'fastLEDWRiteRGB.cpp'
     end
 
     methods
@@ -67,15 +63,12 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         end % set.NumLEDs
 
         function set.ColorType(obj,value)
-            validColorTypes = {'HSV','RGB'};
-            validatestring(value,validColorTypes);
-            clrTypeIx = find(strcmp(value,validColorTypes));
-            assert(~isempty(clrTypeIx));
-            assert(numel(clrTypeIx)==1);
-            srcFiles = {'fastLEDWriteHSV.cpp','fastLEDWriteCSV.cpp'};
-            srcFile = srcFiles{clrTypeIx};
+            isColorTypeIxValid = value==1 || value==2;
+            if ~isColorTypeIxValid
+                error('FastLEDWrite:invalidColorTypeIx', ...
+                    'Color type must equal 1 or 2.');
+            end
             obj.ColorType = value;
-            obj.SrcFile = srcFile;
         end % set.ColorType
 
     end % methods
@@ -184,17 +177,19 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 fastLEDDir = fledblk.utils.getFastLEDLibFolder();
                 srcDir = fullfile(pkgRoot,'src');
                 inclDir = fullfile(pkgRoot,'include');
-                % include /include and /FastLED
+                % add custom source files
                 buildInfo.addIncludePaths(inclDir);
+                if obj.ColorType == 1
+                    srcFile = 'fastLEDWriteRGB.cpp';
+                else
+                    srcFile = 'fastLEDWriteHSV.cpp';
+                end
+                buildInfo.addSourceFiles(srcFile,srcDir);
+                % add FastLED library source
                 buildInfo.addIncludePaths(fastLEDDir);
-                % add custom source files fastLEDWriteXXX.cpp, FastLED.cpp
-                buildInfo.addSourceFiles(obj.SrcFile,srcDir);
-                buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
-                % add FastLED source
                 buildInfo.addIncludeFiles('FastLED.h');
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
-                % add arduino source
-                % the code below requires AVR board
+                % add arduino SPI source (requires AVR board)
                 spiSrcPath = fledblk.utils.getArduinoAVRSPIFolder();
                 buildInfo.addIncludePaths(spiSrcPath);
                 buildInfo.addSourceFiles('SPI.cpp',spiSrcPath);
