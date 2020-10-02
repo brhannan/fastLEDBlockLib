@@ -20,13 +20,13 @@ end
 % get second-to-last slash because parent level is two directories up
 slashIx = slashIxs(end-1);
 
-if lastSlashIx < 2
+if slashIx < 2
     error('fledblk:utils:getFastLEDDriverFolder:invalidPath', ...
         ['Expected final slash (%s) in the path to ' ...
         'getFastLEDDriverFolder.m (%s) to be at ix>1.'], ...
         filesep,fledPkgFldr);
 end
 
-fldr = fledPkgFldr(1:lastSlashIx-1);
+fldr = fledPkgFldr(1:slashIx-1);
 
 end % getFastLEDDriverFolder

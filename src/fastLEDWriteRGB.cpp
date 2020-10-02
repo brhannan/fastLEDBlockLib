@@ -41,7 +41,7 @@ extern "C" void fastLEDInit(int numLEDs, int controlPin)
 }
 
 // write to LED strip
-extern "C" void fastLEDCommand(uint8_T *colors, int nled)
+extern "C" void fastLEDCommandRGB(uint8_T *colors, int nled)
 {
     for (int k=0; k<nled; k++)
     {

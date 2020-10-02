@@ -41,7 +41,7 @@ classdef FastLEDWriteRGB < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
                 srcDir = fullfile(pkgRoot,'src');
                 inclDir = fullfile(pkgRoot,'include');
                 % add custom source files
-                buildInfo.addInlcudePaths(inclDir);
+                buildInfo.addIncludePaths(inclDir);
                 buildInfo.addSourceFiles('fastLEDWriteRGB.cpp',srcDir);
                 % add FastLED library source
                 buildInfo.addIncludePaths(fastLEDDir);
