@@ -4,7 +4,7 @@
 
 #define MAX_LEDS 255
 
-CHSV leds[MAX_LEDS];
+CRGB leds[MAX_LEDS];
 
 // initialize
 extern "C" void fastLEDInit(int numLEDs, int controlPin)
