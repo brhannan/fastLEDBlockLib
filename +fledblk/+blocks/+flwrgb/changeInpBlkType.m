@@ -8,9 +8,9 @@ function changeInpBlkType(block)
 %   % EXAMPLE:
 %       fledblk.blocks.flwrgb.changeInpBlkType(gcb)
 
-validateattributes(block,{'char','numeric'},{},'changeInpBlkType','block')
+validateattributes(block,{'char'},{},'changeInpBlkType','block')
 
-addBrightInpVal = get_param(block,'addBrighnessInport');
+addBrightInpVal = get_param(block,'addBrightnessInport');
 brightVals = {'on','off'};
 validatestring(addBrightInpVal,brightVals);
 
@@ -43,4 +43,4 @@ if isBlkTypeChangeNeeded
     end
 end
 
-end
+end % changeInpBlkType
