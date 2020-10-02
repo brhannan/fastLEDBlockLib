@@ -21,11 +21,19 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
         %   Specify the number of LEDs on the LED strip. The max allowed
         %   value is 255.
         NumLEDs = uint8(3)
+        %ColorType Color specification type.
+        %   Specify color type. May be 'RGB' or 'HSV'.
+        ColorType = 'RGB'
     end
 
     properties (Constant, Hidden)
         %AvailablePins Allowed values for Pin on Arduino Uno.
         AvailablePins = 2:13
+    end
+
+    properties (Hidden)
+        %SrcFile Custom FastLED source file name.
+        SrcFile = 'fastLEDWRiteRGB.cpp'
     end
 
     methods
@@ -58,13 +66,25 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
             obj.NumLEDs = value;
         end % set.NumLEDs
 
+        function set.ColorType(obj,value)
+            validColorTypes = {'HSV','RGB'};
+            validatestring(value,validColorTypes);
+            clrTypeIx = find(strcmp(value,validColorTypes));
+            assert(~isempty(clrTypeIx));
+            assert(numel(clrTypeIx)==1);
+            srcFiles = {'fastLEDWriteHSV.cpp','fastLEDWriteCSV.cpp'};
+            srcFile = srcFiles{clrTypeIx};
+            obj.ColorType = value;
+            obj.SrcFile = srcFile;
+        end % set.ColorType
+
     end % methods
 
     methods (Access=protected)
 
         function setupImpl(obj)
             if coder.target('Rtw')
-                coder.cinclude('myFastLED.h');
+                coder.cinclude('fastLEDWrite.h');
                 coder.ceval('fastLEDInit',obj.NumLEDs,obj.Pin);
             end
         end % setupImpl
@@ -75,7 +95,7 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 % do nothing
             else
                 % codegen setup
-                coder.cinclude('myFastLED.h');
+                coder.cinclude('fastLEDWrite.h');
                 clr = uint8(u);
                 % void fastLEDCommand(uint8_T *colors, int nleds);
                 coder.ceval('fastLEDCommand',coder.ref(clr),obj.NumLEDs);
@@ -118,7 +138,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 % validate inputs in simulation mode
                 expInputLen = 3 * obj.NumLEDs;
                 validateattributes(u,{'numeric'}, ...
-                    {'vector','numel',expInputLen},'','u');
+                    {'vector','numel',expInputLen,'>=',0,'<=',255}, ...
+                    '','u');
             end
         end
 
@@ -166,8 +187,8 @@ classdef FastLEDWrite < matlab.System & coder.ExternalDependency ...
                 % include /include and /FastLED
                 buildInfo.addIncludePaths(inclDir);
                 buildInfo.addIncludePaths(fastLEDDir);
-                % add custom source files myFastLED.cpp, FastLED.cpp
-                buildInfo.addSourceFiles('myFastLED.cpp',srcDir);
+                % add custom source files fastLEDWriteXXX.cpp, FastLED.cpp
+                buildInfo.addSourceFiles(obj.SrcFile,srcDir);
                 buildInfo.addSourceFiles('FastLED.cpp',fastLEDDir);
                 % add FastLED source
                 buildInfo.addIncludeFiles('FastLED.h');
