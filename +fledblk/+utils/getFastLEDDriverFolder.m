@@ -6,22 +6,27 @@ function fldr = getFastLEDDriverFolder()
 %   project.
 %
 %   % EXAMPLE:
-%       p = fledblk.getFastLEDDriverFolder()
+%       p = fledblk.utils.getFastLEDDriverFolder()
 
 fledPkgFldr = fullfile(fileparts(mfilename('fullpath')));
 slashIxs = regexp(fledPkgFldr,filesep);
-if isempty(slashIxs)
+
+if numel(slashIxs) < 2
     error('fledblk:utils:getFastLEDDriverFolder:invalidPath', ...
         ['Expected the path to getFastLEDDriverFolder.m (%s) to ', ...
-        'contain at least one "%s" character.'],fledPkgFldr,filesep);
+        'contain at least two "%s" characters.'],fledPkgFldr,filesep);
 end
-lastSlashIx = slashIxs(end);
+
+% get second-to-last slash because parent level is two directories up
+slashIx = slashIxs(end-1);
+
 if lastSlashIx < 2
     error('fledblk:utils:getFastLEDDriverFolder:invalidPath', ...
         ['Expected final slash (%s) in the path to ' ...
         'getFastLEDDriverFolder.m (%s) to be at ix>1.'], ...
         filesep,fledPkgFldr);
 end
+
 fldr = fledPkgFldr(1:lastSlashIx-1);
 
 end % getFastLEDDriverFolder
