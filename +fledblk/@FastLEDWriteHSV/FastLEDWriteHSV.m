@@ -1,12 +1,24 @@
 classdef FastLEDWriteHSV < fledblk.AbstractFastLEDWrite & coder.ExternalDependency
     %fledblk.FastLEDWriteRSV Write to WS2812B LED strip using FastLED and
-    %   Arduino Uno. Input is a vector of HSV values.
+    %   Arduino Uno (HSV control mode).
     %
-    %   FLW = fledblk.FastLEDWriteHSV returns FastLEDWrite object FLW which
-    %   can be used to control a WS2812B LED strip with an Arduino Uno.
+    %   FLW = fledblk.FastLEDWriteHSV() returns FastLEDWrite object FLW
+    %   which can be used to control a WS2812B LED strip with an Arduino
+    %   Uno.
+    %
+    %   FLW = fledblk.FastLEDWriteHSV('Pin',M) sets the Pin property
+    %   to value M. M is an integer that specifies the index of the data
+    %   pin on the Arduino that the LED strip is connected to.
+    %
+    %   FLW = fledblk.FastLEDWriteHSV(...,'NumLEDs',N) specifies the
+    %   number of active LEDs on the LED strip to the integer value N.
+    %
+    %   FLW.step(U) illuminates LEDs on the LED strip according to the
+    %   values in array U. U, an array of length 3*N, contains HSV values.
+    %   U has the form [H1, S1, V1, H2, S2, V2, ..., HN, SN,VN].
 
-    %   It is assumed that the board type is AVR (see method
-    %   updateBuildInfo()).
+    % It is assumed that the board type is AVR (see method
+    % updateBuildInfo()).
 
     %#codegen
     %#ok<*EMCA>

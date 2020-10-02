@@ -2,15 +2,12 @@ classdef AbstractFastLEDWrite < matlab.System  ...
     & matlab.system.mixin.Propagates & matlab.system.mixin.CustomIcon
     %fledblk.AbstractFastLEDWrite Abstract FastLEDWrite class.
 
-    %   It is assumed that the board type is AVR (see method
-    %   updateBuildInfo()).
-
     %#codegen
     %#ok<*EMCA>
 
     properties (Nontunable)
-        %Pin Data pin index
-        %   Specify the number of the data pin that the LED strip is
+        %Pin Data pin
+        %   Specify the index of the data pin that the LED strip is
         %   connected to.
         Pin = uint8(6)
         %NumLEDs Number of LEDs

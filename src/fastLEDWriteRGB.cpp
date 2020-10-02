@@ -47,6 +47,7 @@ extern "C" void fastLEDCommandRGB(uint8_T *colors, int nled)
     {
         leds[k].setRGB(colors[3*k], colors[3*k+1], colors[3*k+2]);
     }
+    FastLED.setBrightness(255);
     FastLED.show();
     delay(10); // delay in ms
 }
