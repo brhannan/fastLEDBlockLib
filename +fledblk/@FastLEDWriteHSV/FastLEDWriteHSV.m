@@ -15,7 +15,8 @@ classdef FastLEDWriteHSV < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
     %
     %   FLW.step(U) illuminates LEDs on the LED strip according to the
     %   values in array U. U, an array of length 3*N, contains HSV values.
-    %   U has the form [H1, S1, V1, H2, S2, V2, ..., HN, SN,VN].
+    %   U has the form [H1, S1, V1, H2, S2, V2, ..., HN, SN,VN]. U must
+    %   contain integer values between 0 and 255.
 
     % It is assumed that the board type is AVR (see method
     % updateBuildInfo()).

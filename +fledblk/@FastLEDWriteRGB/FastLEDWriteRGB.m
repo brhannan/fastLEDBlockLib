@@ -13,9 +13,11 @@ classdef FastLEDWriteRGB < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
     %   FLW = fledblk.FastLEDWriteRGB(...,'NumLEDs',N) specifies the
     %   number of active LEDs on the LED strip to the integer value N.
     %
-    %   FLW.step(U) illuminates LEDs on the LED strip according to the
+    %   FLW.step(U,B) illuminates LEDs on the LED strip according to the
     %   values in array U. U, an array of length 3*N, contains RGB values.
-    %   U has the form [R1, G1, B1, R2, G2, B2, ..., RN, GN,BN].
+    %   U has the form [R1, G1, B1, R2, G2, B2, ..., RN, GN,BN]. B is a
+    %   scalar brightness value that is applied to all LEDs. U and B must
+    %   contain integers with values between 0 and 255.
 
     % It is assumed that the board type is AVR (see method
     % updateBuildInfo()).
