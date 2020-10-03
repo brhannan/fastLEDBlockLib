@@ -26,6 +26,24 @@ classdef FastLEDWriteRGB < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
     %#ok<*EMCA>
 
     methods (Access = protected)
+        
+        function num = getNumInputsImpl(~)
+            num = 2;
+        end % getNumInputsImpl
+        
+        function validateInputsImpl(obj,u,b)
+            if isempty(coder.target)
+                % validate inputs in simulation mode
+                expInputLen = 3 * obj.NumLEDs;
+                validateattributes(u,{'numeric'}, ...
+                    {'vector','numel',expInputLen,'>=',0,'<=',255}, ...
+                    '','u');
+                validateattributes(b, ...
+                    {'numeric'},{'integer','>=',0,'<=',255}, ...
+                    '','b');
+            end
+        end % validateInputsImpl
+        
         function stepImpl(obj,u,b)
             if isempty(coder.target())
                 % simulation setup
@@ -39,6 +57,7 @@ classdef FastLEDWriteRGB < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
                     obj.NumLEDs,brightness);
             end
         end % stepImpl
+        
     end
 
     methods (Static)

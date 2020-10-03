@@ -25,7 +25,22 @@ classdef FastLEDWriteHSV < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
     %#ok<*EMCA>
 
     methods (Access = protected)
-        function stepImpl(obj,u,~)
+        
+        function num = getNumInputsImpl(~)
+            num = 1;
+        end % getNumInputsImpl
+        
+        function validateInputsImpl(obj,u)
+            if isempty(coder.target)
+                % validate inputs in simulation mode
+                expInputLen = 3 * obj.NumLEDs;
+                validateattributes(u,{'numeric'}, ...
+                    {'vector','numel',expInputLen,'>=',0,'<=',255}, ...
+                    '','u');
+            end
+        end % validateInputsImpl
+        
+        function stepImpl(obj,u)
             if isempty(coder.target())
                 % simulation setup
                 % do nothing
@@ -36,6 +51,7 @@ classdef FastLEDWriteHSV < fledblk.AbstractFastLEDWrite & coder.ExternalDependen
                 coder.ceval('fastLEDCommandHSV',coder.ref(clr),obj.NumLEDs);
             end
         end % stepImpl
+        
     end
 
     methods (Static)

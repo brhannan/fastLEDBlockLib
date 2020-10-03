@@ -1,5 +1,5 @@
 classdef tFastLEDWriteBlock < matlab.unittest.TestCase
-%tFastLEDWriteBlock Smoke test for a simple FastLED model.
+%tFastLEDWriteBlock Smoke test for a simple FastLED models.
 
     properties
         RGBMdl = 'testFastLEDWriteBlockRGB'

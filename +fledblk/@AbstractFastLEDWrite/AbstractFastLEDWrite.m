@@ -82,10 +82,6 @@ classdef AbstractFastLEDWrite < matlab.System  ...
 
     methods (Access=protected)
 
-        function num = getNumInputsImpl(~)
-            num = 2;
-        end
-
         function num = getNumOutputsImpl(~)
             num = 0;
         end
@@ -104,23 +100,6 @@ classdef AbstractFastLEDWrite < matlab.System  ...
 
         function varargout = isInputComplexImpl(~)
             varargout{1} = false;
-        end
-
-        function validateInputsImpl(obj,u,b)
-            if isempty(coder.target)
-                % validate inputs in simulation mode
-                expInputLen = 3 * obj.NumLEDs;
-                validateattributes(u,{'numeric'}, ...
-                    {'vector','numel',expInputLen,'>=',0,'<=',255}, ...
-                    '','u');
-                validateattributes(b, ...
-                    {'numeric'},{'integer','>=',0,'<=',255}, ...
-                    '','b');
-            end
-        end
-
-        function icon = getIconImpl(~)
-            icon = 'FastLED Write';
         end
 
     end % protected methods
