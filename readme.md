@@ -1,6 +1,6 @@
-# FastLEDDriver
+# fastLEDBlockLib
 
-A Simulink library for controlling a WS2812 RGB LED strip with an Arduino Uno.
+A Simulink library containing driver blocks that can be used to  control a WS2812 RGB LED strip with an Arduino Uno.
 
 ## Dependencies
 
