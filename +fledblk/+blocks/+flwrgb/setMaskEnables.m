@@ -24,5 +24,4 @@ end
 
 set_param(block,'MaskEnables',masken);
 
-
 end % setMaskEnables
