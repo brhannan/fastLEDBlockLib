@@ -1,5 +1,5 @@
 classdef FastLEDWriteHSV < fledblk.AbstractFastLEDWrite & coder.ExternalDependency
-    %fledblk.FastLEDWriteRSV Write to WS2812B LED strip using FastLED and
+    %fledblk.FastLEDWriteHSV Write to WS2812B LED strip using FastLED and
     %   Arduino Uno (HSV control mode).
     %
     %   FLW = fledblk.FastLEDWriteHSV() returns FastLEDWrite object FLW
