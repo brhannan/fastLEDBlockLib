@@ -31,7 +31,8 @@ blkPath = [block,'/Brightness'];
 % needed here)
 isBlkTypeChangeNeeded = ~strcmp(get_param(blkPath,'BlockType'),newBlkType);
 if isBlkTypeChangeNeeded
-    fledblk.blocks.replaceBlock(blkPath,newSrcBlk);
+    dims = getDefaultBlockSize(newBlkType);
+    fledblk.blocks.replaceBlock(blkPath,newSrcBlk,'NewBlockDims',dims);
     % set block properties
     if createBrightnessInport
         set_param(blkPath,'OutDataTypeStr','uint8');
@@ -44,3 +45,34 @@ if isBlkTypeChangeNeeded
 end
 
 end % changeInpBlkType
+
+
+%--------------------------------------------------------------------------
+function dims = getDefaultBlockSize(blkType)
+% get default block size
+% block sizes are hard coded here so that get_param() deoes not fail due to
+% library not loaded 
+
+validBlkTypes = {'Clock','Constant','In1','Out1'};
+blkType = validatestring(blkType,validBlkTypes);
+
+switch blkType
+    case 'Clock'
+        w = 20;
+        h = 20;
+    case 'Constant'
+        w = 30;
+        h = 30;
+    case 'In1'
+        w = 30;
+        h = 14;
+    case 'Out1'
+        w = 30;
+        h = 30;
+    otherwise
+        error('Invalid block type.');
+end
+
+dims = [w,h];
+
+end % getDefaultBlockSize
